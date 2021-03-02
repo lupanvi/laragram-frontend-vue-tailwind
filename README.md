@@ -11,6 +11,7 @@ This open source project was made with:
 * Jest
 
 ![alt text](docs/laragram1.jpg)
+
 ![alt text](docs/laragram2.jpg)
 
 ## Installation
