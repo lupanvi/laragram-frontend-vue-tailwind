@@ -34,7 +34,7 @@ npm install
 Next, boot up a server and visit your laragram frontend app. 
 
 ```bash
-npm npm run serve
+npm run serve
 ```
 
 1. Visit: `http://localhost:8080` and write the demo credentials:
