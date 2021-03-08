@@ -1,15 +1,15 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 
-import routes from './routes';
-import store from '../store';
+import routes from './routes'
+import store from '../store'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const router = new VueRouter({
   mode: 'history',
   routes
-});
+})
 
 router.beforeEach((to, from, next) => {                
     
@@ -34,4 +34,4 @@ router.beforeEach((to, from, next) => {
 
 });
 
-export default router;
+export default router

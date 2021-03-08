@@ -20,7 +20,7 @@ const getters = {
 
 export const actions = {
 
-  async [LOGIN]({commit, dispatch}, credentials) {      
+  async [LOGIN]({commit}, credentials) {      
     await $http.get('/sanctum/csrf-cookie')            
     const {data} = await $http.post("/login", credentials)                  
     commit(SET_AUTH, data)        

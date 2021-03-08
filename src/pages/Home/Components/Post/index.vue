@@ -22,8 +22,18 @@
         <div class="details px-3 pt-3">
             <div class="info">                    
                 <div class="social"> 
-                    <Fa icon="heart" size="lg" class="heart cursor-pointer mr-1" :class="{liked : post.liked}"  @click="toggle" /> 
-                    <Fa :icon="['far', 'comment']" size="lg" class="comment cursor-pointer" @click.prevent="showAllcomments" />                    
+                    <a 
+                        href="#" 
+                        class="heart cursor-pointer mr-1" 
+                        :class="{liked : post.liked}"  
+                        @click.prevent="toggle">                        
+                            <Fa icon="heart" size="lg" /> 
+                    </a>
+                    <a 
+                        class="comment cursor-pointer" 
+                        @click.prevent="showAllcomments">
+                            <Fa :icon="['far', 'comment']" size="lg" />
+                    </a>                    
                 </div>
                 <div class="likes">
                     <span v-text="post.likesCount"></span> likes
@@ -127,11 +137,14 @@ export default{
     font-weight: bold;
 }
 
-.social i{
-    font-size: 20px; 
-    cursor: pointer;                       
+.social a{
+    display: inline;                       
     
-}    
+}
+
+.liked{
+    color: red;
+}
 
 .more_options{
     background: transparent;

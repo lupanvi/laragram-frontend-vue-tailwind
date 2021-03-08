@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import Comments from './'
 import CommentNew from './Components/CommentNew'
 import Comment from './Components/Comment'
+import { beforeEach } from "@/router"
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -29,7 +30,8 @@ const setup = (initialStore={})=>{
     const store = new Vuex.Store({...defaultStore, ...initialStore});
     return shallowMount(Comments, {
         store, 
-        localVue        
+        localVue,
+        stubs:['Fa']        
     })        
 }
 

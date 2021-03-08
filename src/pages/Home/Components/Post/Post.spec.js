@@ -30,14 +30,14 @@ const defaultProps = {
 const setup = (initialProps= {}, initialStore={})=>{		
 	const store = new Vuex.Store(initialStore)	
     const router = new VueRouter({routes});
-	const propsData = merge(defaultProps, initialProps)
+	const propsData = merge(defaultProps, initialProps)    
 
 	return shallowMount(Post, {
 		propsData,
 		store, 
 		localVue,
 		router,
-        stubs:['Fa']
+        stubs: ['Fa']
 	})	
 		
 }
@@ -107,7 +107,7 @@ describe('render', () => {
 
 describe('Post actions', ()=>{
 
-	it("calls ´addLike´ action when heart icon is clicked and post is not liked", async () => { 
+	it("calls `addLike` action when heart icon is clicked and post is not liked", async () => { 
 
 		const actions = {
 			addLike: jest.fn()
@@ -125,7 +125,7 @@ describe('Post actions', ()=>{
     	
     })
 
-    it("calls ´removeLike´ action when heart icon is clicked and Post is liked", async () => { 
+    it("calls `removeLike` action when heart icon is clicked and Post is liked", async () => { 
 
 		const actions = {
 			removeLike: jest.fn()

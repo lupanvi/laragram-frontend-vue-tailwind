@@ -8,8 +8,8 @@
 				<h1 class="text-3xl">Comments</h1>						
 			</div>
 			<comment-new :path="post.path" :id="post.id"></comment-new>	
-			<div class="flex flex-col overflow-auto h-screen w-full pt-2 mb-3 text-sm">				
-				 <div class="post flex mb-2 p-2 border-b">
+			<div class="flex flex-col overflow-auto h-screen w-full pt-2 mb-3 text-sm">
+				<div class="post flex mb-2 p-2 border-b">
 		            <div class="mb-2 ml-2 mr-3 mt-1 avatar">     
 		                <img
 		                	   :src="post.user.avatar_path"

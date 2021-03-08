@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import { mount, shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
-import axios from 'axios'
-
+import flushPromises from "flush-promises";
 import {actions, mutations} from './'
 
 import {
@@ -11,28 +10,63 @@ import {
     UPDATE_POST_IN_LIST
 } from '@/store/mutations.type'
 import {
-    FETCH_POSTS    
+    FETCH_POSTS, 
+    POST_DELETE    
 } from '@/store/actions.type'
 
+const mockData = {
+    data: [
+        {id:1, description:'test'},
+        {id:2, description:'test'}
+    ]
+}
+
+jest.mock("@/plugins/axios", () => ({
+  delete: () => {
+    return new Promise((resolve) => {         
+      resolve(true)
+    })
+  },
+  get: () => {
+    return new Promise((resolve) => {              
+        resolve(mockData)
+    })
+  }
+}))        
+
 describe('Actions',()=>{
+    
+    beforeEach(() => {
+      jest.clearAllMocks();
+      jest.resetModules();
+    })  
 
-    it('fetch posts', ()=>{
-
-        jest.mock("axios", () => ({
-          get: () => { 
-            return new Promise((resolve) => {         
-              resolve(true)
-            })
-          }
-        }))
+    it('fetches posts', async ()=>{                
          
-        const commit = jest.fn()     
-        
-        actions[FETCH_POSTS]({commit}).then(()=>{
-            expect(commit).toHaveBeenCalledWith(SET_POSTS, true)    
-        })
+        const commit = jest.fn()         
+
+        await actions[FETCH_POSTS]({commit})
+
+        await flushPromises()
+
+        expect(commit).toHaveBeenCalledWith(SET_POSTS, mockData.data)          
 
     })
+
+    it('deletes a post', async ()=>{       
+         
+        const commit = jest.fn()   
+
+        const postId = 1       
+        
+        await actions[POST_DELETE]({commit}, postId);
+
+        await flushPromises()
+
+        expect(commit).toHaveBeenCalledWith(REMOVE_POST_IN_LIST, postId)   
+
+    })
+  
     
 })
 

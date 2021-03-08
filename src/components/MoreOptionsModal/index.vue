@@ -19,15 +19,15 @@ export default{
 	methods:{
 		...mapActions(['removePost']),
 		beforeOpen(event){					
-			this.post = event.params.post;				
+			this.post = event.params.post				
 		},           				
 		edit(){	                          
-			 this.$modal.hide('more-options-modal'); 
-			 this.$router.push({ name: 'posts.edit', params: {id: this.post.id}  });   	
+			 this.$modal.hide('more-options-modal')
+			 this.$router.push({ name: 'posts.edit', params: {id: this.post.id}  })   	
 		},
-        destroy(){                                           
-			this.removePost(this.post.id);
-			this.$modal.hide('more-options-modal');            
+        async destroy(){                                           
+			await this.removePost(this.post.id)
+			this.$modal.hide('more-options-modal')           
         }
 	}
 }

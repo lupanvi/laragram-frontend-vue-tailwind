@@ -13,18 +13,22 @@ const state = {
 
 export const actions = {
 	
-	[FETCH_POSTS]({commit}){
-		return $http.get('/api/posts').then(({data})=>{
-			commit(SET_POSTS, data)                
-    }).catch(error => {
+	async [FETCH_POSTS]({commit}){   
+    try{
+      const {data} = await $http.get('/api/posts')
+      commit(SET_POSTS, data)                
+    }catch(e){
       throw Error('API Error occurred.')
-    })    
+    }		    
 	},
 	
-	[POST_DELETE]({commit}, postId){
-		$http.delete('/api/posts/'+ postId).then(()=>{
-			commit(REMOVE_POST_IN_LIST, postId )
-    })
+	async [POST_DELETE]({commit}, postId){
+    try{		    
+      await $http.delete('/api/posts/'+ postId)
+      commit(REMOVE_POST_IN_LIST, postId )       
+    }catch(e){
+      throw Error('API Error occurred.')
+    }    
 	}	
 
 };

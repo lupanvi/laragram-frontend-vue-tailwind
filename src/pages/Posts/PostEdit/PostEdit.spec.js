@@ -28,8 +28,7 @@ const defaultStore = {
 }
 
 const setup = (initialStore={})=>{            
-    const store = new Vuex.Store({...defaultStore,...initialStore})          
-
+    const store = new Vuex.Store({...defaultStore,...initialStore}) 
     return shallowMount(PostEdit, {        
         store, 
         localVue        
@@ -77,22 +76,14 @@ describe('PostEdit actions', ()=>{
 			editPost: jest.fn()
 		}    	
 
-    	const wrapper = setup( {actions} ) 
+    	const wrapper = setup({actions})            
 
     	await wrapper.find('a.save').trigger('click')
 
-    	expect(actions.editPost).toHaveBeenCalled()    	    	
+    	expect(actions.editPost).toHaveBeenCalled()    	    	        
     	
     })
 
-    it("disables `save` button when clicked", async () => {       
-
-        const wrapper = setup() 
-
-        await wrapper.find('a.save').trigger('click')
-
-        expect(wrapper.find('a.save').classes('disabled')).toBe(true)             
-        
-    })   
+   
    
 })

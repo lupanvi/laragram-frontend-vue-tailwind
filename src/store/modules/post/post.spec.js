@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import { mount, shallowMount, createLocalVue } from '@vue/test-utils'
-
 import {actions, mutations} from './'
 
 import {
@@ -10,7 +9,7 @@ import {
     ADD_COMMENT_TO_LIST
 } from '@/store/mutations.type'
 
-describe('post store - mutations',()=>{   
+describe('Mutations',()=>{   
 
     it('sets post', () => {
 
