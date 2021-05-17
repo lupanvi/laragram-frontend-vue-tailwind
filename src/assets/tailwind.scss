@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html{
+	@apply text-gray-600
+}
+
+body{
+	@apply bg-gray-100
+}
+
+@layer components{
+	.form-input{
+		@apply  w-full transition duration-300 ease-in-out h-9 bg-gray-100 border rounded focus:outline-none focus:ring-2 focus:border-blue-300 text-gray-600 text-sm
+	}
+}
