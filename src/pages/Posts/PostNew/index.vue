@@ -58,24 +58,12 @@ import {
 import { mapActions, mapGetters } from 'vuex'
 
 export default{	
-	name: 'PostsAddNew',
-	/*props:{
-		image: {
-			type: String,
-			//required: true
-		},
-		imageFile: {
-			//type: Object,
-			//required: true
-		}
-	},*/
+	name: 'PostsAddNew',	
 	data(){
 		return {
 			step: 1,			
 			selectedFilter: 'normal',				
-			description:'',
-			//imageSrc: this.post.image,
-			///imageData: this.post.imageFile,
+			description:'',			
 			feedback:'',
 			inProgress: false				
 		}
@@ -107,8 +95,7 @@ export default{
 			let data = new FormData()			            
 			data.append('image_path', this.post.imageFile)
             data.append('filter', this.selectedFilter)
-            data.append('description', this.description)	
-								
+            data.append('description', this.description)									
             this[POST_PUBLISH](data)
 			.then(()=>{
 				this.inProgress = false

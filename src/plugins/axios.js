@@ -12,7 +12,8 @@ $http.interceptors.response.use(
 	response => response,
 	error => {
 	  if (error.response.status === 422) {
-		store.commit(SET_ERRORS, error.response.data.errors);
+		store.commit(SET_ERRORS, error.response.data.errors)
+		return Promise.reject(error)
 	  } else if (error.response.status === 401) {
 		store.commit('auth/'+SET_AUTH, null);		
 		router.push({ name: "Login" });

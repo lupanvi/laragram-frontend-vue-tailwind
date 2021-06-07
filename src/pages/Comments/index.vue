@@ -39,45 +39,40 @@
 
 <script>
 
-import { mapGetters } from "vuex";
-import store from "@/store";
-import CommentNew from './Components/CommentNew';
-import Comment from './Components/Comment';
-import moment from 'moment';
-import {FETCH_POST, FETCH_COMMENTS} from '@/store/actions.type';
+import { mapState, mapActions } from "vuex"
+import store from "@/store"
+import CommentNew from './Components/CommentNew'
+import Comment from './Components/Comment'
+import moment from 'moment'
+import {FETCH_POST, FETCH_COMMENTS} from '@/store/actions.type'
+
+const module = 'post'
 
 export default {	
 	name: 'CommentsList',
-
+	components: { CommentNew, Comment },
 	beforeRouteEnter(to, from, next) {
 		Promise.all([
-		      store.dispatch(FETCH_POST, to.params.id),
-		      store.dispatch(FETCH_COMMENTS, to.params.id)
+		      store.dispatch(`${module}/`+FETCH_POST, to.params.id),
+		      store.dispatch(`${module}/`+FETCH_COMMENTS, to.params.id)
 		    ]).then(() => {
 		      next();			      
 		    });
 	},
-
 	computed: {			
-
 		ago(){
             return moment(this.post.created_at).fromNow();
     	},
-
-    	...mapGetters(["post", "comments"])
-
-	},							
-
-	components: { CommentNew, Comment }		
-
-	
+    	...mapState(module, {
+			post: state => state.post,
+			comments: state => state.comments
+		})
+	}	
 };
 	
 </script>
 <style scoped>	
-
 	.box {	   
 	    min-height: min-content;	    
-	}
-	
+	}	
 </style>

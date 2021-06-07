@@ -70,10 +70,12 @@
 </template>
 
 <script>
+import { computed, onMounted, reactive, toRefs } from 'vue'
 import moment from 'moment'
 import { LIKE_ADD, LIKE_REMOVE } from "@/store/actions.type"
 import MoreOptionsModal from '@/components/MoreOptionsModal'
-import { mapActions } from 'vuex';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router'
 export default{
     name: 'Post',    
     components:{
@@ -85,87 +87,84 @@ export default{
             required: true
         }
     },
-    data(){
-        return {
+    setup(props){
+
+        const router = useRouter()
+        const store = useStore()
+
+        const postActions = reactive({
             readMoreButton : false,
             descriptionSummary: '',
             modalOpen: false
-        };
-    },
-    computed: {
-        ago(){
-            return moment(this.post.created_at).fromNow();
-        }            
-    },     
-    created(){  
+        })
 
-        if(this.post.description === null) {                           
-            return false;
+        onMounted(()=>{
+            if (props.post.description === null) {
+                return false
+            }
+
+            if (props.post.description.length > 120){
+                postActions.descriptionSummary = props.post.description.substring(0,120)
+                postActions.readMoreButton = true
+            } 
+        })        
+        
+        const like = ()=>{
+            store.dispatch('post/'+LIKE_ADD, props.post.path)
         }
 
-        if (this.post.description.length > 120){
-            this.descriptionSummary = this.post.description.substring(0,120);
-            this.readMoreButton = true;
+        const dislike = ()=>{
+            store.dispatch('post/'+LIKE_REMOVE, props.post.path)
         }
 
-    },                                 
-    methods:{
-        ...mapActions('post',[LIKE_ADD,LIKE_REMOVE]),
-        toggle(){
-            this.post.liked ? this.dislike() : this.like();                
-        },
-        like(){
-            this[LIKE_ADD](this.post.path);                
-        },
-        dislike(){
-            this[LIKE_REMOVE](this.post.path);                                
-        },        
-        readMore(){
-            this.readMoreButton = false;                
-        },
-        showAllcomments(){
-            this.$router.push({
+        const toggle = ()=>{            
+            props.post.liked ? dislike() : like()
+        }
+
+        const readMore = ()=>{
+            postActions.readMoreButton = false 
+        }
+
+        const showAllcomments = ()=>{
+            router.push({
                 name:'comments.index', 
-                params: { id: this.post.id }
-            });
+                params: { id: props.post.id }
+            })
         }
+
+        const ago = computed(()=>{
+            return moment(props.post.created_at).fromNow()
+        })
+
+        return {...toRefs(postActions), ago, toggle, showAllcomments, readMore}
+
     }
 };
 </script>
 <style scoped>
-
 .post{
     background-color: #fff;
     margin-bottom:2rem;          
 }
-
 .username, .likes{
     font-weight: bold;
 }
-
 .social a{
-    display: inline;                       
-    
+    display: inline;                           
 }
-
 .liked{
     color: red;
 }
-
 .more_options{
     background: transparent;
     font-size: 1.5rem;
     border: none;    
 }
-
 .time_ago{
     color: #8e8e8e;
     font-size: 0.8rem;
 } 
-
 .all_comments_link{
     color: #8e8e8e;
 }
-
-    
 </style>

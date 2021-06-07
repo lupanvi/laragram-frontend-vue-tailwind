@@ -23,7 +23,7 @@ export default{
         }
     },
 	methods:{
-		...mapActions('post', [POST_DELETE]),	
+		...mapActions('home', [POST_DELETE]),	
 		edit(){	                          			 
 			 this.$router.push({ name: 'posts.edit', params: {id: this.post.id}  })   	
 		},

@@ -10,12 +10,6 @@ const state = {
 	posts: []  
 }
 
-const getters = {
-  postsList(state){
-    return state.posts
-  }
-}
-
 export const actions = {
 	
 	async [FETCH_POSTS]({commit}){   
@@ -65,8 +59,7 @@ export const mutations = {
 
 export default {
   namespaced:true,
-  state,
-  getters,
+  state,  
   actions,
   mutations
 };

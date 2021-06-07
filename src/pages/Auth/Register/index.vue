@@ -4,7 +4,7 @@
             <h1 class="text-center text-4xl">Laragram</h1>
             <h3 class="text-center text-2xl">Sign up to see photos and videos from your friends.
             </h3>                                      
-            <form method="POST" @submit.prevent="register">                
+            <form method="POST" @submit.prevent="onRegister">                
                 <div class="mt-4 form-group" :class="{ 'form-group--error': errors.name }">                        
                     <div class="special-label-holder">     
                         <input  
@@ -81,8 +81,8 @@
                         <button type="submit" class="bg-blue-500 text-white active:bg-blue-500 text-md px-3 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none hover:bg-blue-600" :disabled="loading">
                             Register
                         </button>
-                        <div class="mt-6" v-if="feedback">
-                            <div class="text-danger" v-text="feedback"></div>
+                        <div class="mt-6 text-center" v-if="feedback">
+                            <div class="text-red-400" v-text="feedback"></div>
                         </div> 
                         <div class="mt-5 text-center text-sm">
                             <p>
@@ -102,34 +102,42 @@
 </template>
 
 <script>
+import { ref, reactive, computed, onMounted } from 'vue'
 import {REGISTER} from '@/store/actions.type.js'
-import { mapActions } from 'vuex';
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 export default {
-    name:'Register',    
-    data() {
-        return {
-            form: {
-                name: "",                
-                email: "",
-                password: "",
-                password_confirmation: ""
-            },
-            feedback: "",
-            loading: false            
-        };
-    },    
-    methods: {
-        ...mapActions('auth',[REGISTER]),
-        async register(){                        
-            this.loading = true
+    name:'Register',
+    setup(){
+        const store = useStore()
+        const router = useRouter()
+        const loading = ref(false)
+        const feedback = ref("")
+        const form = reactive({            
+            name: "", 
+            email: "", 
+            password: "", 
+            password_confirmation: ""                                        
+        })
+
+        onMounted(()=>{
+            store.commit('setErrors',[])
+        })
+
+        const errors = computed(() => store.state.errors)
+
+        const onRegister = async () => {
+            loading.value = true
             try{
-                await this[REGISTER](this.form)
-                this.$router.push('/login');  
+                await store.dispatch('auth/' + REGISTER, form)
+                router.push({name:'login'}) 
             }catch(error){
-                this.loading = false;
-                this.feedback = error.response.data.message;
+                loading.value = false
+                feedback.value = 'There was an error'
             }            
         }
+
+        return {form, loading, feedback, errors, onRegister} 
     }
 };
 </script>

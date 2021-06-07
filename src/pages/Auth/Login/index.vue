@@ -65,40 +65,43 @@
 </template>
 
 <script>
+import { ref, reactive, computed, onMounted } from 'vue'
 import { LOGIN } from '@/store/actions.type'
-import { mapGetters, mapActions } from 'vuex'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default {
     name: 'Login',
-    setup () {}, 
-    computed: {
-        ...mapGetters(['errors'])
-    },
-    data() {
-        return {
-            form: {
-                email: "", 
-                password: "", 
-                remember: false 
-            },
-            loading: false,
-            feedback: ""
-        };
-    },       
-    methods: {
-        ...mapActions("auth", [LOGIN]),
+    setup () {
 
-        async onSubmit() {                        
-            this.loading = true                       
+        const store = useStore()
+        const router = useRouter()
+        const loading = ref(false)
+        const feedback = ref("")
+        const form = reactive({            
+            email: "", 
+            password: "", 
+            remember: false                                        
+        })
+
+        onMounted(()=>{
+            store.commit('setErrors',[])
+        })
+        
+        const errors = computed(() => store.state.errors)
+
+        const onSubmit = async () => {
+            loading.value = true
             try{
-                await this[LOGIN](this.form)
-                this.$router.push({name:'home'})                                
+                await store.dispatch('auth/' + LOGIN, form)
+                router.push({name:'home'}) 
             }catch(error){
-                this.loading = false                                
-                this.feedback = 'There was an error'
-
-            }                                
+                loading.value = false
+                feedback.value = 'There was an error'
+            }            
         }
+
+        return {form, loading, feedback, errors, onSubmit}
     }
 };
 </script>

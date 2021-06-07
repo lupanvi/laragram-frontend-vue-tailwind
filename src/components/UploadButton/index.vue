@@ -4,10 +4,10 @@
       <input           
           accept="image/*"
           type="file"
-          name="file"
-          id="file" 
+          id="file"          
           @change="handleImageSelected" 
-          class="hidden"         
+          class="hidden"
+          ref="fileupload"         
        />
       <label for="file">        
         <Fa :icon="['far', 'plus-square']" class="bg-grey-500 text-4xl cursor-pointer" /> 
